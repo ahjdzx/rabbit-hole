@@ -249,6 +249,8 @@ func (c *Client) GetQueueWithParameters(vhost, queue string, qs url.Values) (rec
 //
 
 type QueueSettings struct {
+	Name       string                 `json:"name"`
+	Node       string                 `json:"node"`
 	Durable    bool                   `json:"durable"`
 	AutoDelete bool                   `json:"auto_delete"`
 	Arguments  map[string]interface{} `json:"arguments"`

@@ -88,8 +88,9 @@ func newRequestWithBody(client *Client, method string, path string, body []byte)
 
 	req.Close = true
 	req.SetBasicAuth(client.Username, client.Password)
+
 	// set Opaque to preserve the percent-encoded path.
-	req.URL.Opaque = "//" + client.host + "/api/" + path
+	// req.URL.Opaque = "//" + client.host + "/api/" + path
 
 	req.Header.Add("Content-Type", "application/json")
 

@@ -1,6 +1,7 @@
 package rabbithole
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
@@ -116,7 +117,20 @@ func (c *Client) GetConnection(name string) (rec *ConnectionInfo, err error) {
 //
 
 func (c *Client) CloseConnection(name string) (res *http.Response, err error) {
-	req, err := newRequestWithBody(c, "DELETE", "connections/"+PathEscape(name), nil)
+	payload := struct {
+		Name   string `json:"name"`
+		Reason string `json:"reason"`
+	}{
+		Name:   name,
+		Reason: "Close by maxq admin.",
+	}
+
+	reqByte, err := json.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := newRequestWithBody(c, "DELETE", "connections/"+PathEscape(name), reqByte)
 	if err != nil {
 		return nil, err
 	}

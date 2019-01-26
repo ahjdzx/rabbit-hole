@@ -144,9 +144,14 @@ func (c *Client) DeclareBinding(vhost string, info BindingInfo) (res *http.Respo
 
 // DeleteBinding delets an individual binding
 func (c *Client) DeleteBinding(vhost string, info BindingInfo) (res *http.Response, err error) {
+	body, err := json.Marshal(&info)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := newRequestWithBody(c, "DELETE", "bindings/"+PathEscape(vhost)+
 		"/e/"+PathEscape(info.Source)+"/"+PathEscape(string(info.DestinationType[0]))+
-		"/"+PathEscape(info.Destination)+"/"+PathEscape(info.PropertiesKey), nil)
+		"/"+PathEscape(info.Destination)+"/"+PathEscape(info.PropertiesKey), body)
 	if err != nil {
 		return nil, err
 	}
